@@ -1,26 +1,15 @@
 package ch.crosslink;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import picocli.CommandLine;
-import picocli.CommandLine.Command;
 
-/**
- * Hello world!
- *
- */
-@Command(name = "wp-reflect", version = "wp-reflect 1.0.0", mixinStandardHelpOptions = true)
-public class App implements Runnable
+public class App
 {
-    @CommandLine.Option(names = {"--upstream"}, description = "Upstream server")
-    String upstreamUrl;
-
-    @Override
-    public void run() {
-        System.out.println(this.upstreamUrl);
-    }
-
     public static void main(String[] args )
     {
-        int exitCode = new CommandLine(new App()).execute(args);
+        Injector injector = Guice.createInjector(new Main());
+        int exitCode = new CommandLine(new EntryCommand(), new CommandFactory(injector)).execute(args);
         System.exit(exitCode);
     }
 }
