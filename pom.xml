@@ -4,6 +4,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <organization>
+    <name>Cross-Link</name>
+  </organization>
+
   <groupId>ch.crosslink</groupId>
   <artifactId>wp-reflect</artifactId>
   <version>1.0.0</version>
@@ -131,6 +135,60 @@
               </transformers>
               <createDependencyReducedPom>false</createDependencyReducedPom>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.akathist.maven.plugins.launch4j</groupId>
+        <artifactId>launch4j-maven-plugin</artifactId>
+        <version>2.3.3</version>
+        <executions>
+          <execution>
+            <id>wp-reflect</id>
+            <phase>package</phase>
+            <goals><goal>launch4j</goal></goals>
+            <configuration>
+              <headerType>console</headerType>
+              <outfile>${project.build.directory}/${project.build.finalName}.exe</outfile>
+              <jar>${project.build.directory}/${project.build.finalName}.jar</jar>
+              <errTitle>wp-reflect</errTitle>
+              <classPath>
+                <mainClass>ch.crosslink.App</mainClass>
+                <addDependencies>true</addDependencies>
+                <preCp>anything</preCp>
+              </classPath>
+              <versionInfo>
+                <fileVersion>1.0.0.0</fileVersion>
+                <internalName>wp-reflect</internalName>
+                <originalFilename>original.exe</originalFilename>
+              </versionInfo>
+              <jre>
+                <minVersion>9.0.0</minVersion>
+                <path>/usr/bin/java</path>
+              </jre>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2-beta-5</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+              <mainClass>ch.crosslink.App</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+        <executions>
+          <execution>
+            <id>assembly</id>
+            <phase>package</phase>
+            <goals><goal>single</goal></goals>
           </execution>
         </executions>
       </plugin>
